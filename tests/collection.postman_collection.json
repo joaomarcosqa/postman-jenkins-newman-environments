@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "668c1417-4ddf-4dd7-97be-eb19ac6f3f36",
 		"name": "Reqres Environments",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18569357"
 	},
 	"item": [
@@ -74,7 +74,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://{{base_url}}/api/users",
+					"raw": "{{base_url}}/api/users",
 					"protocol": "https",
 					"host": [
 						"{{base_url}}"
@@ -142,7 +142,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{base_url}}/api/users",
+					"raw": "{{base_url}}/api/users",
 					"protocol": "https",
 					"host": [
 						"{{base_url}}"
@@ -163,7 +163,7 @@
 					"script": {
 						"exec": [
 							"pm.sendRequest({\r",
-							"    url: 'https://reqres.in/api/users',\r",
+							"    url: 'reqres.in/api/users',\r",
 							"    method: 'POST',\r",
 							"    header: {\r",
 							"        'x-api-key': 'reqres-free-v1',\r",
@@ -244,7 +244,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{base_url}}/api/users/{{created_user_id}}\n",
+					"raw": "{{base_url}}/api/users/{{created_user_id}}\n",
 					"protocol": "https",
 					"host": [
 						"{{base_url}}"
@@ -345,7 +345,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{base_url}}/api/users/1\n",
+					"raw": "{{base_url}}/api/users/1\n",
 					"protocol": "https",
 					"host": [
 						"{{base_url}}"
@@ -441,7 +441,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{base_url}}/api/users/2\n",
+					"raw": "{{base_url}}/api/users/2\n",
 					"protocol": "https",
 					"host": [
 						"{{base_url}}"
@@ -494,7 +494,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://{{base_url}}/api/users",
+					"raw": "{{base_url}}/api/users",
 					"protocol": "https",
 					"host": [
 						"{{base_url}}"
