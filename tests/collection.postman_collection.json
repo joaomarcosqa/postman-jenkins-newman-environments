@@ -1,573 +1,573 @@
 {
-	"info": {
-		"_postman_id": "668c1417-4ddf-4dd7-97be-eb19ac6f3f36",
-		"name": "Reqres Environments",
-		"schema": "schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18569357"
-	},
-	"item": [
-		{
-			"name": "Create User",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 201\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verificar se não há campos vazios\", function () {\r",
-							"    let jsonData = pm.response.json();\r",
-							"\r",
-							"    function verificarCampos(obj) {\r",
-							"        for (let key in obj) {\r",
-							"            const value = obj[key];\r",
-							"\r",
-							"            if (typeof value === 'string') {\r",
-							"                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
-							"                    pm.expect(value).to.not.be.empty;\r",
-							"                });\r",
-							"            }\r",
-							"\r",
-							"            if (Array.isArray(value)) {\r",
-							"                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
-							"                    pm.expect(value.length).to.be.above(0);\r",
-							"                });\r",
-							"            }\r",
-							"        }\r",
-							"    }\r",
-							"\r",
-							"    if (Array.isArray(jsonData)) {\r",
-							"        jsonData.forEach(item => {\r",
-							"            verificarCampos(item);\r",
-							"        });\r",
-							"    } else {\r",
-							"        verificarCampos(jsonData);\r",
-							"    }\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "x-api-key",
-						"value": "{{x-api-key}}"
-					},
-					{
-						"key": "Content-Type",
-						"value": "{{content_type}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"name\": \"John Doe\", \"job\": \"Developer\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/api/users",
-					"protocol": "https",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "List Users",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verificar se não há campos vazios\", function () {\r",
-							"    let jsonData = pm.response.json();\r",
-							"\r",
-							"    function verificarCampos(obj) {\r",
-							"        for (let key in obj) {\r",
-							"            const value = obj[key];\r",
-							"\r",
-							"            if (typeof value === 'string') {\r",
-							"                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
-							"                    pm.expect(value).to.not.be.empty;\r",
-							"                });\r",
-							"            }\r",
-							"\r",
-							"            if (Array.isArray(value)) {\r",
-							"                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
-							"                    pm.expect(value.length).to.be.above(0);\r",
-							"                });\r",
-							"            }\r",
-							"        }\r",
-							"    }\r",
-							"\r",
-							"    if (Array.isArray(jsonData)) {\r",
-							"        jsonData.forEach(item => {\r",
-							"            verificarCampos(item);\r",
-							"        });\r",
-							"    } else {\r",
-							"        verificarCampos(jsonData);\r",
-							"    }\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-api-key",
-						"value": "{{x-api-key}}"
-					}
-				],
-				"url": {
-					"raw": "{{base_url}}/api/users",
-					"protocol": "https",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Edit user",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"pm.sendRequest({\r",
-							"    url: 'reqres.in/api/users',\r",
-							"    method: 'POST',\r",
-							"    header: {\r",
-							"        'x-api-key': 'reqres-free-v1',\r",
-							"        'Content-Type': 'application/json'\r",
-							"    },\r",
-							"    body: {\r",
-							"        mode: 'raw',\r",
-							"        raw: JSON.stringify({\r",
-							"            name: 'John Doe',\r",
-							"            job: 'Developer'\r",
-							"        })\r",
-							"    }\r",
-							"}, function (err, res) {\r",
-							"    if (err) {\r",
-							"        console.error('Erro ao criar usuário:', err);\r",
-							"    } else {\r",
-							"        const json = res.json();\r",
-							"        pm.environment.set(\"created_user_id\", json.id);\r",
-							"        console.log(\"Usuário criado com id:\", json.id);\r",
-							"    }\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code é 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verificar se não há campos vazios\", function () {\r",
-							"    let jsonData = pm.response.json();\r",
-							"\r",
-							"    function verificarCampos(obj) {\r",
-							"        for (let key in obj) {\r",
-							"            const value = obj[key];\r",
-							"\r",
-							"            if (typeof value === 'string') {\r",
-							"                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
-							"                    pm.expect(value).to.not.be.empty;\r",
-							"                });\r",
-							"            }\r",
-							"\r",
-							"            if (Array.isArray(value)) {\r",
-							"                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
-							"                    pm.expect(value.length).to.be.above(0);\r",
-							"                });\r",
-							"            }\r",
-							"        }\r",
-							"    }\r",
-							"\r",
-							"    if (Array.isArray(jsonData)) {\r",
-							"        jsonData.forEach(item => {\r",
-							"            verificarCampos(item);\r",
-							"        });\r",
-							"    } else {\r",
-							"        verificarCampos(jsonData);\r",
-							"    }\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "x-api-key",
-						"value": "{{x-api-key}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{base_url}}/api/users/{{created_user_id}}\n",
-					"protocol": "https",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"users",
-						"{{created_user_id}}\n"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Search User",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code é 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Usuário retornado com campos válidos\", function () {\r",
-							"    const json = pm.response.json();\r",
-							"    pm.expect(json.data).to.have.property(\"id\");\r",
-							"    pm.expect(json.data).to.have.property(\"email\");\r",
-							"    pm.expect(json.data).to.have.property(\"first_name\");\r",
-							"    pm.expect(json.data).to.have.property(\"last_name\");\r",
-							"    pm.expect(json.data).to.have.property(\"avatar\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verificar se não há campos vazios\", function () {\r",
-							"    if (pm.response.code === 204) {\r",
-							"        console.log(\"Resposta 204 No Content - ignorando verificação de campos.\");\r",
-							"        return;\r",
-							"    }\r",
-							"\r",
-							"    let jsonData;\r",
-							"    try {\r",
-							"        jsonData = pm.response.json();\r",
-							"    } catch (e) {\r",
-							"        console.warn(\"Resposta não contém JSON.\");\r",
-							"        return;\r",
-							"    }\r",
-							"\r",
-							"    function verificarCampos(obj) {\r",
-							"        for (let key in obj) {\r",
-							"            const value = obj[key];\r",
-							"\r",
-							"            if (typeof value === 'string') {\r",
-							"                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
-							"                    pm.expect(value).to.not.be.empty;\r",
-							"                });\r",
-							"            }\r",
-							"\r",
-							"            if (Array.isArray(value)) {\r",
-							"                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
-							"                    pm.expect(value.length).to.be.above(0);\r",
-							"                });\r",
-							"            }\r",
-							"        }\r",
-							"    }\r",
-							"\r",
-							"    if (Array.isArray(jsonData)) {\r",
-							"        jsonData.forEach(item => {\r",
-							"            verificarCampos(item);\r",
-							"        });\r",
-							"    } else {\r",
-							"        verificarCampos(jsonData);\r",
-							"    }\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-api-key",
-						"value": "{{x-api-key}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{base_url}}/api/users/1\n",
-					"protocol": "https",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"users",
-						"1\n"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete User",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code é 204 - Usuário excluído com sucesso\", function () {\r",
-							"    pm.response.to.have.status(204);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Corpo da resposta deve estar vazio\", function () {\r",
-							"    pm.expect(pm.response.text()).to.eql(\"\");\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Verificar se não há campos vazios\", function () {\r",
-							"    if (pm.response.code === 204) {\r",
-							"        console.log(\"Resposta 204 No Content - ignorando verificação de campos.\");\r",
-							"        return;\r",
-							"    }\r",
-							"\r",
-							"    let jsonData;\r",
-							"    try {\r",
-							"        jsonData = pm.response.json();\r",
-							"    } catch (e) {\r",
-							"        console.warn(\"Resposta não contém JSON.\");\r",
-							"        return;\r",
-							"    }\r",
-							"\r",
-							"    function verificarCampos(obj) {\r",
-							"        for (let key in obj) {\r",
-							"            const value = obj[key];\r",
-							"\r",
-							"            if (typeof value === 'string') {\r",
-							"                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
-							"                    pm.expect(value).to.not.be.empty;\r",
-							"                });\r",
-							"            }\r",
-							"\r",
-							"            if (Array.isArray(value)) {\r",
-							"                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
-							"                    pm.expect(value.length).to.be.above(0);\r",
-							"                });\r",
-							"            }\r",
-							"        }\r",
-							"    }\r",
-							"\r",
-							"    if (Array.isArray(jsonData)) {\r",
-							"        jsonData.forEach(item => {\r",
-							"            verificarCampos(item);\r",
-							"        });\r",
-							"    } else {\r",
-							"        verificarCampos(jsonData);\r",
-							"    }\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "x-api-key",
-						"value": "{{x-api-key}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{base_url}}/api/users/2\n",
-					"protocol": "https",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"users",
-						"2\n"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Fail Auth",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code é 401 - Falta de API key\", function () {\r",
-							"    pm.response.to.have.status(401);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Mensagem de erro correta\", function () {\r",
-							"    const json = pm.response.json();\r",
-							"    pm.expect(json.error).to.eql(\"Missing API key\");\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "{{content_type}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"name\": \"John Doe\", \"job\": \"Developer\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}/api/users",
-					"protocol": "https",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"users"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					"pm.test(\"Verificar se não há campos vazios\", function () {\r",
-					"    if (pm.response.code === 204) {\r",
-					"        console.log(\"Resposta 204 No Content - ignorando verificação de campos.\");\r",
-					"        return;\r",
-					"    }\r",
-					"\r",
-					"    let jsonData;\r",
-					"    try {\r",
-					"        jsonData = pm.response.json();\r",
-					"    } catch (e) {\r",
-					"        console.warn(\"Resposta não contém JSON.\");\r",
-					"        return;\r",
-					"    }\r",
-					"\r",
-					"    function verificarCampos(obj) {\r",
-					"        for (let key in obj) {\r",
-					"            const value = obj[key];\r",
-					"\r",
-					"            if (typeof value === 'string') {\r",
-					"                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
-					"                    pm.expect(value).to.not.be.empty;\r",
-					"                });\r",
-					"            }\r",
-					"\r",
-					"            if (Array.isArray(value)) {\r",
-					"                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
-					"                    pm.expect(value.length).to.be.above(0);\r",
-					"                });\r",
-					"            }\r",
-					"        }\r",
-					"    }\r",
-					"\r",
-					"    if (Array.isArray(jsonData)) {\r",
-					"        jsonData.forEach(item => {\r",
-					"            verificarCampos(item);\r",
-					"        });\r",
-					"    } else {\r",
-					"        verificarCampos(jsonData);\r",
-					"    }\r",
-					"});\r",
-					""
-				]
-			}
-		}
-	]
+  "info": {
+    "_postman_id": "74086d97-0e77-4e9f-8203-1cdc6604f0f4",
+    "name": "Reqres",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18569357"
+  },
+  "item": [
+    {
+      "name": "Create User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Verificar se não há campos vazios\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "\r",
+              "    function verificarCampos(obj) {\r",
+              "        for (let key in obj) {\r",
+              "            const value = obj[key];\r",
+              "\r",
+              "            if (typeof value === 'string') {\r",
+              "                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
+              "                    pm.expect(value).to.not.be.empty;\r",
+              "                });\r",
+              "            }\r",
+              "\r",
+              "            if (Array.isArray(value)) {\r",
+              "                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
+              "                    pm.expect(value.length).to.be.above(0);\r",
+              "                });\r",
+              "            }\r",
+              "        }\r",
+              "    }\r",
+              "\r",
+              "    if (Array.isArray(jsonData)) {\r",
+              "        jsonData.forEach(item => {\r",
+              "            verificarCampos(item);\r",
+              "        });\r",
+              "    } else {\r",
+              "        verificarCampos(jsonData);\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{x-api-key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "{{content_type}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"John Doe\", \"job\": \"Developer\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Users",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Verificar se não há campos vazios\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "\r",
+              "    function verificarCampos(obj) {\r",
+              "        for (let key in obj) {\r",
+              "            const value = obj[key];\r",
+              "\r",
+              "            if (typeof value === 'string') {\r",
+              "                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
+              "                    pm.expect(value).to.not.be.empty;\r",
+              "                });\r",
+              "            }\r",
+              "\r",
+              "            if (Array.isArray(value)) {\r",
+              "                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
+              "                    pm.expect(value.length).to.be.above(0);\r",
+              "                });\r",
+              "            }\r",
+              "        }\r",
+              "    }\r",
+              "\r",
+              "    if (Array.isArray(jsonData)) {\r",
+              "        jsonData.forEach(item => {\r",
+              "            verificarCampos(item);\r",
+              "        });\r",
+              "    } else {\r",
+              "        verificarCampos(jsonData);\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{x-api-key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Edit user",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.sendRequest({\r",
+              "    url: 'https://reqres.in/api/users',\r",
+              "    method: 'POST',\r",
+              "    header: {\r",
+              "        'x-api-key': 'reqres-free-v1',\r",
+              "        'Content-Type': 'application/json'\r",
+              "    },\r",
+              "    body: {\r",
+              "        mode: 'raw',\r",
+              "        raw: JSON.stringify({\r",
+              "            name: 'John Doe',\r",
+              "            job: 'Developer'\r",
+              "        })\r",
+              "    }\r",
+              "}, function (err, res) {\r",
+              "    if (err) {\r",
+              "        console.error('Erro ao criar usuário:', err);\r",
+              "    } else {\r",
+              "        const json = res.json();\r",
+              "        pm.environment.set(\"created_user_id\", json.id);\r",
+              "        console.log(\"Usuário criado com id:\", json.id);\r",
+              "    }\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Verificar se não há campos vazios\", function () {\r",
+              "    let jsonData = pm.response.json();\r",
+              "\r",
+              "    function verificarCampos(obj) {\r",
+              "        for (let key in obj) {\r",
+              "            const value = obj[key];\r",
+              "\r",
+              "            if (typeof value === 'string') {\r",
+              "                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
+              "                    pm.expect(value).to.not.be.empty;\r",
+              "                });\r",
+              "            }\r",
+              "\r",
+              "            if (Array.isArray(value)) {\r",
+              "                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
+              "                    pm.expect(value.length).to.be.above(0);\r",
+              "                });\r",
+              "            }\r",
+              "        }\r",
+              "    }\r",
+              "\r",
+              "    if (Array.isArray(jsonData)) {\r",
+              "        jsonData.forEach(item => {\r",
+              "            verificarCampos(item);\r",
+              "        });\r",
+              "    } else {\r",
+              "        verificarCampos(jsonData);\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{x-api-key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/users/{{created_user_id}}\n",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "{{created_user_id}}\n"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Usuário retornado com campos válidos\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.data).to.have.property(\"id\");\r",
+              "    pm.expect(json.data).to.have.property(\"email\");\r",
+              "    pm.expect(json.data).to.have.property(\"first_name\");\r",
+              "    pm.expect(json.data).to.have.property(\"last_name\");\r",
+              "    pm.expect(json.data).to.have.property(\"avatar\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Verificar se não há campos vazios\", function () {\r",
+              "    if (pm.response.code === 204) {\r",
+              "        console.log(\"Resposta 204 No Content - ignorando verificação de campos.\");\r",
+              "        return;\r",
+              "    }\r",
+              "\r",
+              "    let jsonData;\r",
+              "    try {\r",
+              "        jsonData = pm.response.json();\r",
+              "    } catch (e) {\r",
+              "        console.warn(\"Resposta não contém JSON.\");\r",
+              "        return;\r",
+              "    }\r",
+              "\r",
+              "    function verificarCampos(obj) {\r",
+              "        for (let key in obj) {\r",
+              "            const value = obj[key];\r",
+              "\r",
+              "            if (typeof value === 'string') {\r",
+              "                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
+              "                    pm.expect(value).to.not.be.empty;\r",
+              "                });\r",
+              "            }\r",
+              "\r",
+              "            if (Array.isArray(value)) {\r",
+              "                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
+              "                    pm.expect(value.length).to.be.above(0);\r",
+              "                });\r",
+              "            }\r",
+              "        }\r",
+              "    }\r",
+              "\r",
+              "    if (Array.isArray(jsonData)) {\r",
+              "        jsonData.forEach(item => {\r",
+              "            verificarCampos(item);\r",
+              "        });\r",
+              "    } else {\r",
+              "        verificarCampos(jsonData);\r",
+              "    }\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{x-api-key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/users/1\n",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "1\n"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete User",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 204 - Usuário excluído com sucesso\", function () {\r",
+              "    pm.response.to.have.status(204);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Corpo da resposta deve estar vazio\", function () {\r",
+              "    pm.expect(pm.response.text()).to.eql(\"\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Verificar se não há campos vazios\", function () {\r",
+              "    if (pm.response.code === 204) {\r",
+              "        console.log(\"Resposta 204 No Content - ignorando verificação de campos.\");\r",
+              "        return;\r",
+              "    }\r",
+              "\r",
+              "    let jsonData;\r",
+              "    try {\r",
+              "        jsonData = pm.response.json();\r",
+              "    } catch (e) {\r",
+              "        console.warn(\"Resposta não contém JSON.\");\r",
+              "        return;\r",
+              "    }\r",
+              "\r",
+              "    function verificarCampos(obj) {\r",
+              "        for (let key in obj) {\r",
+              "            const value = obj[key];\r",
+              "\r",
+              "            if (typeof value === 'string') {\r",
+              "                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
+              "                    pm.expect(value).to.not.be.empty;\r",
+              "                });\r",
+              "            }\r",
+              "\r",
+              "            if (Array.isArray(value)) {\r",
+              "                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
+              "                    pm.expect(value.length).to.be.above(0);\r",
+              "                });\r",
+              "            }\r",
+              "        }\r",
+              "    }\r",
+              "\r",
+              "    if (Array.isArray(jsonData)) {\r",
+              "        jsonData.forEach(item => {\r",
+              "            verificarCampos(item);\r",
+              "        });\r",
+              "    } else {\r",
+              "        verificarCampos(jsonData);\r",
+              "    }\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{x-api-key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/users/2\n",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "2\n"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fail Auth",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 401 - Falta de API key\", function () {\r",
+              "    pm.response.to.have.status(401);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Mensagem de erro correta\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.error).to.eql(\"Missing API key\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "{{content_type}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"John Doe\", \"job\": \"Developer\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/users",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          "pm.test(\"Verificar se não há campos vazios\", function () {\r",
+          "    if (pm.response.code === 204) {\r",
+          "        console.log(\"Resposta 204 No Content - ignorando verificação de campos.\");\r",
+          "        return;\r",
+          "    }\r",
+          "\r",
+          "    let jsonData;\r",
+          "    try {\r",
+          "        jsonData = pm.response.json();\r",
+          "    } catch (e) {\r",
+          "        console.warn(\"Resposta não contém JSON.\");\r",
+          "        return;\r",
+          "    }\r",
+          "\r",
+          "    function verificarCampos(obj) {\r",
+          "        for (let key in obj) {\r",
+          "            const value = obj[key];\r",
+          "\r",
+          "            if (typeof value === 'string') {\r",
+          "                pm.test(`Campo ${key} não deve ser uma string vazia`, function () {\r",
+          "                    pm.expect(value).to.not.be.empty;\r",
+          "                });\r",
+          "            }\r",
+          "\r",
+          "            if (Array.isArray(value)) {\r",
+          "                pm.test(`Campo ${key} não deve ser um array vazio`, function () {\r",
+          "                    pm.expect(value.length).to.be.above(0);\r",
+          "                });\r",
+          "            }\r",
+          "        }\r",
+          "    }\r",
+          "\r",
+          "    if (Array.isArray(jsonData)) {\r",
+          "        jsonData.forEach(item => {\r",
+          "            verificarCampos(item);\r",
+          "        });\r",
+          "    } else {\r",
+          "        verificarCampos(jsonData);\r",
+          "    }\r",
+          "});\r",
+          ""
+        ]
+      }
+    }
+  ]
 }
